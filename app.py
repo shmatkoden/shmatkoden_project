@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
-from datetime import datetime
+
 
 app = Flask(__name__)
 
-# --- Основной маршрут для корневого URL ---
+
 @app.route('/')
 def home():
     return "Welcome to the Expense Tracker API!"
 
-# --- Остальные маршруты (пользователи, категории и записи) ---
+
 users = []
 categories = []
 records = []
@@ -53,7 +53,39 @@ def delete_category(category_id):
     categories.remove(category)
     return '', 204
 
+@app.route('/record', methods=['POST'])
+def create_record():
+    record = request.json
+    record['id'] = len(records) + 1
+    records.append(record)
+    return jsonify(record), 201
 
-# Запуск приложения
+@app.route('/record/<int:record_id>', methods=['GET', 'DELETE'])
+def manage_record(record_id):
+    record = next((r for r in records if r['id'] == record_id), None)
+    if not record:
+        return jsonify({'error': 'Record not found'}), 404
+    if request.method == 'GET':
+        return jsonify(record)
+    records.remove(record)
+    return '', 204
+
+@app.route('/record', methods=['GET'])
+def get_records():
+    user_id = request.args.get('user_id')
+    category_id = request.args.get('category_id')
+
+    if not user_id and not category_id:
+        return jsonify({'error': 'user_id or category_id parameter required'}), 400
+
+    filtered_records = records
+    if user_id:
+        filtered_records = [r for r in filtered_records if r['user_id'] == int(user_id)]
+    if category_id:
+        filtered_records = [r for r in filtered_records if r['category_id'] == int(category_id)]
+
+    return jsonify(filtered_records)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

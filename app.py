@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify
-
+from datetime import datetime
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    return "Welcome to the Expense Tracker API!"
+    return "IO-22 Shmatko Denys API!"
 
 
 users = []
@@ -58,6 +58,7 @@ def create_record():
     record = request.json
     record['id'] = len(records) + 1
     records.append(record)
+
     return jsonify(record), 201
 
 @app.route('/record/<int:record_id>', methods=['GET', 'DELETE'])

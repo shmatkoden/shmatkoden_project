@@ -3,11 +3,9 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def home():
     return "IO-22 Shmatko Denys API!"
-
 
 users = []
 categories = []
@@ -38,11 +36,21 @@ def get_users():
 def create_category():
     category = request.json
     category['id'] = len(categories) + 1
+    # Если категория создается с user_id, она будет пользовательской
+    if 'user_id' in category:
+        category['type'] = 'user'
+    else:
+        category['type'] = 'global'
     categories.append(category)
     return jsonify(category), 201
 
 @app.route('/category', methods=['GET'])
 def get_categories():
+    user_id = request.args.get('user_id')
+    if user_id:
+        user_id = int(user_id)
+        filtered_categories = [c for c in categories if c['type'] == 'global' or c.get('user_id') == user_id]
+        return jsonify(filtered_categories)
     return jsonify(categories)
 
 @app.route('/category/<int:category_id>', methods=['DELETE'])
@@ -58,7 +66,6 @@ def create_record():
     record = request.json
     record['id'] = len(records) + 1
     records.append(record)
-
     return jsonify(record), 201
 
 @app.route('/record/<int:record_id>', methods=['GET', 'DELETE'])
@@ -86,7 +93,6 @@ def get_records():
         filtered_records = [r for r in filtered_records if r['category_id'] == int(category_id)]
 
     return jsonify(filtered_records)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

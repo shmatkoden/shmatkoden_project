@@ -22,4 +22,4 @@ services:
       POSTGRES_PASSWORD: 12345
       POSTGRES_DB: test
     ports:
-      - "5432:5432"
+      - "5433:5433"

@@ -2,7 +2,7 @@ import os
 
 PROPAGATE_EXCEPTIONS = True
 FLASK_DEBUG = True
-SQLALCHEMY_DATABASE_URI = f'postgresql://{os.getenv("POSTGRES_USER", "postgres")}:{os.getenv("POSTGRES_PASSWORD", "12345")}@db:5433/{os.getenv("POSTGRES_DB", "test")}'
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:12345@localhost:5433/test"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 API_TITLE = "Finance REST API"
 API_VERSION = "v1"

@@ -1,5 +1,9 @@
 # Shmatkoden Project
 
+##Варіант
+29%3=2
+2. Користувацькі категорії витрат
+
 ## Опис
 Це Flask-додаток, запущений у Docker-контейнері з використанням Docker Compose.
 
@@ -21,3 +25,8 @@
 
 4. Запуск контейнера за допомогою Docker Compose:
   "docker-compose up"
+
+## Міграція
+1.flask db migrate -m "Initial migration."
+2.flask db upgrade
+3.flask run 

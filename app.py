@@ -76,7 +76,7 @@ user_schema = UserSchema()
 category_schema = CategorySchema()
 record_schema = RecordSchema()
 
-# Ендпоінти
+
 @app.route('/')
 def home():
     return "IO-22 Shmatko Denys API!"
